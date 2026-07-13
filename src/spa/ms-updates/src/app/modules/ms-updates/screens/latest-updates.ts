@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-
+import { Component, inject, signal } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+// service
+import { DataService } from '../ms-data.service';
 // components
 import { UpdateList } from '../components/update-list';
 
@@ -25,8 +28,102 @@ import { UpdateList } from '../components/update-list';
         </div> -->
       </section>
   
-      <app-update-list></app-update-list>
+      <section class="updates-section" aria-labelledby="updatesTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Latest updates</p>
+            <h2 id="updatesTitle">What's new</h2>
+          </div>
+          <!-- <label class="sort-control">
+            <span>Sort</span>
+            <select id="sortSelect">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="product">Product name</option>
+            </select>
+          </label> -->
+        </div>
+
+        <div class="filter-row" id="filterRow" aria-label="Filter by product">
+          <button class="filter" [class.active]="filterFormGroup.value.source === ''" type="button" (click)="selectSourceFilter('')">All updates</button>
+          <button class="filter" [class.active]="filterFormGroup.value.source === 'azure'" type="button" (click)="selectSourceFilter('azure')">Azure</button>
+          <button class="filter" [class.active]="filterFormGroup.value.source === 'microsoft foundry'" type="button" (click)="selectSourceFilter('microsoft foundry')">Microsoft Foundry</button>
+          <button class="filter" [class.active]="filterFormGroup.value.source === 'github'" type="button" (click)="selectSourceFilter('github')">GitHub</button>
+          <button class="filter" [class.active]="filterFormGroup.value.source === 'microsoft fabric'" type="button" (click)="selectSourceFilter('microsoft fabric')">Fabric</button>
+          <button class="filter" [class.active]="filterFormGroup.value.source === 'microsoft 365'" type="button" (click)="selectSourceFilter('microsoft 365')">Microsoft 365</button>
+        </div>
+
+        <div class="results-meta" aria-live="polite">
+          <span id="resultCount">Showing 0 updates</span>
+          <span class="updated-time">Refreshed today</span>
+        </div>
+
+        <!-- update list component -->
+        <app-update-list [data]="pagedList().data"></app-update-list>
+      </section>    
+
+      
   `,
   styles: ``,
 })
-export class LatestUpdates {}
+export class LatestUpdates {
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly dataService = inject(DataService);
+  private readonly filterSources = ['azure', 'microsoft foundry', 'github', 'microsoft fabric', 'microsoft 365'];
+
+  // default page size
+  private readonly pageSize = 16;
+  // properties
+  pagedList = signal<any>({ data: [], total: 0 });
+  // filter form group
+  filterFormGroup = new FormGroup({
+    source: new FormControl(''),
+    pageSize: new FormControl(this.pageSize),
+    pageIndex: new FormControl(0)
+  });
+
+  ngOnInit() {
+    // query params changes
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const pageIndex = +params['pageIndex'];
+      //const source = String(params['source'] ?? '');
+
+      // retrive the query params
+      this.filterFormGroup.patchValue({
+        source: params['source'] ?? '',
+        pageIndex: pageIndex ? pageIndex : 0,
+      });
+
+      // reset the result      			
+      this.pagedList.set({ data: [], total: 0 });
+      // ensure it scrolls to the top of the page
+      // window.scroll(0, 0);
+      // retrieve the updates based on the query params
+      this.getUpdates(this.filterFormGroup.value.source ?? '', 
+                      this.filterFormGroup.value.pageIndex ?? 0, 
+                      this.filterFormGroup.value.pageSize ?? this.pageSize);  
+
+    });
+  }
+
+  // select source filter
+  selectSourceFilter(source: string) {
+    // update the source the query string, which will trigger the query params changes event		
+    this.router.navigate(['/'], {
+      queryParams: {        
+        source: source,
+        pageIndex: 0,
+        pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
+      }
+    });
+  }
+
+  private getUpdates(source: string, pageIndex: number, pageSize: number) { 
+    this.dataService.getAllUpdates(source, pageIndex, pageSize).subscribe((response) => {
+      this.pagedList.set(response);
+      //console.log('Updates retrieved:', response);
+    });
+  }
+}
+

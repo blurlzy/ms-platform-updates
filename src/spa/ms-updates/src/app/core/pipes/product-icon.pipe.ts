@@ -4,8 +4,9 @@ const PRODUCT_ICONS: Record<string, string> = {
   azure: 'assets/icons/azure.svg',
   fabric: 'assets/icons/fabric.svg',
   github: 'assets/icons/github.svg',
-  'microsoft foundry': 'assets/icons/foundry.svg',
   foundry: 'assets/icons/foundry.svg',
+  'microsoft foundry': 'assets/icons/foundry.svg',
+  'microsoft fabric': 'assets/icons/fabric.svg'
 };
 
 @Pipe({

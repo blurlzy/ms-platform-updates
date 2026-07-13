@@ -24,7 +24,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
             <path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.64 5.64l1.42 1.42m9.88 9.88 1.42 1.42m0-12.72-1.42 1.42M7.06 16.94l-1.42 1.42M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" />
           </svg>
         </button>
-        <a class="subscribe-button" routerLink="/">About</a>
+        <a class="subscribe-button" href="https://zongyi.me/about" target="_blank" rel="noreferrer">About</a>
       </nav>
     </header>
 
