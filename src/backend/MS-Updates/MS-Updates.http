@@ -1,0 +1,6 @@
+@MS_Updates_HostAddress = http://localhost:5197
+
+GET {{MS_Updates_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

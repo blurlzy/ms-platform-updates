@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MS-Updates.Tests/MS-Updates.Tests.csproj" Id="61fa1436-0468-4a9a-aff5-0cdcd6a2885f" />
+  <Project Path="MS-Updates/MS-Updates.csproj" />
+</Solution>
