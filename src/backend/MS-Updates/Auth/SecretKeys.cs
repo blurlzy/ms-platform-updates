@@ -1,6 +1,6 @@
 ﻿namespace MS_Updates.Auth
 {
-    internal static class SecretKeys
+    public static class SecretKeys
     {
         // Cosmos keys
         public const string CosmosConnection = "CosmosConnection";

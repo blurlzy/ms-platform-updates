@@ -3,7 +3,7 @@ using Azure.Security.KeyVault.Secrets;
 
 namespace MS_Updates.Auth
 {
-    internal static class SecretManager
+    public static class SecretManager
     {
         // azure key vault name
         private const string _kv = "kv-ms-updates";
@@ -18,6 +18,6 @@ namespace MS_Updates.Auth
                                    }));
 
         // get secret from azure key vault
-        internal static string GetSecret(string secretName) => Client.GetSecret(secretName).Value.Value;
+        public static string GetSecret(string secretName) => Client.GetSecret(secretName).Value.Value;
     }
 }
