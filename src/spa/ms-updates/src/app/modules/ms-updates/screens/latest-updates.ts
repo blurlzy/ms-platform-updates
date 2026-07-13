@@ -61,10 +61,13 @@ import { UpdateList } from '../components/update-list';
         <!-- update list component -->
         <app-update-list [data]="pagedList().data"></app-update-list>
       </section>    
-
-      
   `,
-  styles: ``,
+  styles: `
+    // :host {
+    //   display: block;
+    //   min-height: 750px;
+    // }
+  `,
 })
 export class LatestUpdates {
   private readonly activatedRoute = inject(ActivatedRoute);

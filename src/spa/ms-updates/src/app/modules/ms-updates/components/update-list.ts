@@ -3,10 +3,11 @@ import { Component, Input } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ProductIconPipe } from '../../../core/pipes/product-icon.pipe';
 import { FirstParagraphPipe } from '../../../core/pipes/first-paragraph.pipe';
+import { TitleBracketPipe } from '../../../core/pipes/title-bracket.pipe';
 
 @Component({
   selector: 'app-update-list',
-  imports: [ProductIconPipe, DatePipe, FirstParagraphPipe],
+  imports: [ProductIconPipe, DatePipe, FirstParagraphPipe, TitleBracketPipe],
   template: ` 
         <div class="updates-grid">
           @for(item of data;track item.id) {
@@ -16,7 +17,9 @@ import { FirstParagraphPipe } from '../../../core/pipes/first-paragraph.pipe';
                 <span class="product-icon"><img [src]="item.source | productIcon" alt=""></span>
                 <span>{{ item.source }}</span>
               </div>
-              <span class="badge ">Generally available</span>
+              @if (item.title | titleBracket; as badge) {
+                <span class="badge">{{ badge }}</span>
+              }
             </div>
             <h3>{{ item.title }}</h3>
             <p>{{ item.description | firstParagraph }}</p>

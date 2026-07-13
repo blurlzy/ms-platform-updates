@@ -12,7 +12,7 @@ export class FirstParagraphPipe implements PipeTransform {
 		const paragraphMatch = value.match(/<p\b[^>]*>([\s\S]*?)<\/p\s*>/i);
 
 		if (paragraphMatch) {
-			return this.getTextContent(paragraphMatch[1]);
+			return this.getFirstSentence(this.getTextContent(paragraphMatch[1]));
 		}
 
 		return this.getFirstSentence(this.getTextContent(value));
