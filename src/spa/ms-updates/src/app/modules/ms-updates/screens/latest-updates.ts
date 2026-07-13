@@ -5,10 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../ms-data.service';
 // components
 import { UpdateList } from '../components/update-list';
+import { Pager } from '../components/pager';
 
 @Component({
   selector: 'app-latest-updates',
-  imports: [UpdateList],
+  imports: [UpdateList, Pager],
   template: ` 
       <section class="hero">
         <p class="eyebrow">One feed. Every important update.</p>
@@ -54,12 +55,19 @@ import { UpdateList } from '../components/update-list';
         </div>
 
         <div class="results-meta" aria-live="polite">
-          <span id="resultCount">Showing 0 updates</span>
+          <span id="resultCount">Showing {{ pagedList().data.length }} of {{ pagedList().total }} updates</span>
           <span class="updated-time">Refreshed today</span>
         </div>
 
         <!-- update list component -->
         <app-update-list [data]="pagedList().data"></app-update-list>
+
+        <app-pager
+          [pageIndex]="filterFormGroup.value.pageIndex ?? 0"
+          [pageSize]="filterFormGroup.value.pageSize ?? pageSize"
+          [totalItems]="pagedList().total"
+          (pageChange)="selectPage($event)"
+        ></app-pager>
       </section>    
   `,
   styles: `
@@ -73,7 +81,7 @@ export class LatestUpdates {
   private readonly filterSources = ['azure', 'microsoft foundry', 'github', 'microsoft fabric', 'microsoft 365'];
 
   // default page size
-  private readonly pageSize = 12;
+  readonly pageSize = 12;
   // properties
   pagedList = signal<any>({ data: [], total: 0 });
   // filter form group
@@ -114,6 +122,16 @@ export class LatestUpdates {
       queryParams: {        
         source: source,
         pageIndex: 0,
+        pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
+      }
+    });
+  }
+
+  selectPage(newPageIndex: number) {
+    this.router.navigate(['/'], {
+      queryParams: {
+        source: this.filterFormGroup.value.source ?? '',
+        pageIndex: newPageIndex,
         pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
       }
     });

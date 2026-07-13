@@ -1,11 +1,17 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { DataService } from '../modules/ms-updates/ms-data.service';
 
 @Component({
   selector: 'app-main-layout',
   imports: [RouterOutlet, RouterLink],
   template: ` 
+    <div
+        class="progress-bar"
+        role="progressbar"
+        aria-label="Loading updates"
+      ></div>
     <header class="site-header">
       <a class="brand" routerLink="/" aria-label="Microsoft Cloud & AI Platform Updates home">
         <span class="brand-mark" aria-hidden="true">
@@ -41,10 +47,46 @@ import { RouterLink, RouterOutlet } from '@angular/router';
       </a>  
     </footer>
   `,
-  styles: ``,
+  styles: `
+    .progress-bar {
+      background: var(--cp-accent);
+      height: 5px;
+      left: 0;
+      overflow: hidden;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .progress-bar::after {
+      animation: loading-progress 1.3s ease-in-out infinite;
+      background: var(--cp-accent-fg);
+      content: '';
+      height: 100%;
+      left: 0;
+      opacity: 0.55;
+      position: absolute;
+      transform: translateX(-100%);
+      width: 45%;
+    }
+
+    @keyframes loading-progress {
+      to {
+        transform: translateX(325%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .progress-bar::after {
+        animation-duration: 2.5s;
+      }
+    }
+  `,
 })
 export class MainLayout {
   private readonly document = inject(DOCUMENT);
+  protected readonly dataService = inject(DataService);
   protected readonly isDarkTheme = signal(
     (this.document.defaultView?.localStorage.getItem('theme') ?? 'light') === 'dark',
   );
