@@ -10,8 +10,8 @@ import { TitleBracketPipe } from '../../../core/pipes/title-bracket.pipe';
   imports: [ProductIconPipe, DatePipe, FirstParagraphPipe, TitleBracketPipe],
   template: ` 
         <div class="updates-grid">
-          @for(item of data;track item.id) {
-            <article class="update-card">
+          @for(item of data; track item.id;) {
+            <article class="update-card" >
             <div class="card-top">
               <div class="product">
                 <span class="product-icon"><img [src]="item.source | productIcon" alt=""></span>
@@ -40,7 +40,34 @@ import { TitleBracketPipe } from '../../../core/pipes/title-bracket.pipe';
           <button id="clearFilters" type="button">Clear filters</button>
         </div>     
   `,
-  styles: ``,
+  styles: `
+    :host {
+      display: block;
+      min-height: 580px;
+    }
+
+    .update-card {
+      animation: fade-in 150ms ease-out both;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .update-card {
+        animation: none;
+      }
+    }
+  `,
 })
 export class UpdateList {
     @Input({ required: true }) data: any = [];

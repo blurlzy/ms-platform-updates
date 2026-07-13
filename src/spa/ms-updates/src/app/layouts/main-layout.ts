@@ -35,7 +35,10 @@ import { RouterLink, RouterOutlet } from '@angular/router';
     <footer>
       <span>zongyi.me 🚀 All rights reserved</span>
       <p>Your shortcut to Microsoft Cloud & AI updates.</p>
-      <a href="#">Back to top ↑</a>
+      <a class="social-link" href="https://www.linkedin.com/in/zongyi-li-88445515/" target="_blank" rel="noreferrer">
+        <img src="assets/icons/linkedin.svg" alt="" />
+      
+      </a>  
     </footer>
   `,
   styles: ``,

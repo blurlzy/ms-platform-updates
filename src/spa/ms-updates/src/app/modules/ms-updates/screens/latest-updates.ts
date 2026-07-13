@@ -63,10 +63,7 @@ import { UpdateList } from '../components/update-list';
       </section>    
   `,
   styles: `
-    // :host {
-    //   display: block;
-    //   min-height: 750px;
-    // }
+
   `,
 })
 export class LatestUpdates {
@@ -76,7 +73,7 @@ export class LatestUpdates {
   private readonly filterSources = ['azure', 'microsoft foundry', 'github', 'microsoft fabric', 'microsoft 365'];
 
   // default page size
-  private readonly pageSize = 16;
+  private readonly pageSize = 12;
   // properties
   pagedList = signal<any>({ data: [], total: 0 });
   // filter form group
