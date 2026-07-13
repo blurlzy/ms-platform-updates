@@ -179,7 +179,7 @@ main {
   background: var(--cp-surface);
   margin: 0 auto;
   max-width: 960px;
-  padding: 110px 28px 124px;
+  padding: 80px 28px 65px;
   text-align: center;
 }
 
@@ -259,7 +259,7 @@ kbd {
   background: var(--cp-surface-soft);
   border-bottom: 1px solid var(--cp-border);
   border-top: 1px solid var(--cp-border);
-  padding: 92px max(28px, calc((100vw - 1184px) / 2)) 110px;
+  padding: 65px max(28px, calc((100vw - 1184px) / 2)) 110px;
 }
 
 .section-heading {
@@ -562,7 +562,7 @@ kbd {
 footer {
   align-items: center;
   background: var(--cp-surface);
-  border-top: 1px solid var(--cp-border);
+  // border-top: 1px solid var(--cp-border);
   color: var(--cp-text-muted);
   display: flex;
   font-size: 12px;

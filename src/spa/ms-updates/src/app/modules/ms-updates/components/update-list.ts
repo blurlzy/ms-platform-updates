@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
+import { ProductIconPipe } from '../../../core/pipes/product-icon.pipe';
 
 @Component({
   selector: 'app-update-list',
-  imports: [],
+  imports: [ProductIconPipe],
   template: ` 
-        <section class="updates-section" aria-labelledby="updatesTitle">
+      <section class="updates-section" aria-labelledby="updatesTitle">
         <div class="section-heading">
           <div>
-            <p class="section-kicker">Latest releases</p>
-            <h2 id="updatesTitle">What’s new</h2>
+            <p class="section-kicker">Latest updates</p>
+            <h2 id="updatesTitle">What's new</h2>
           </div>
           <label class="sort-control">
             <span>Sort</span>
@@ -38,7 +39,7 @@ import { Component } from '@angular/core';
         <article class="update-card">
           <div class="card-top">
             <div class="product">
-              <span class="product-icon"><img src="icons/azure.svg" alt=""></span>
+              <span class="product-icon"><img [src]="'Azure' | productIcon" alt=""></span>
               <span>Azure</span>
             </div>
             <span class="badge ">Generally available</span>
@@ -56,7 +57,7 @@ import { Component } from '@angular/core';
         <article class="update-card">
           <div class="card-top">
             <div class="product">
-              <span class="product-icon"><img src="icons/foundry.svg" alt=""></span>
+              <span class="product-icon"><img [src]="'Microsoft Foundry' | productIcon" alt=""></span>
               <span>Microsoft Foundry</span>
             </div>
             <span class="badge preview">Preview</span>
@@ -74,7 +75,7 @@ import { Component } from '@angular/core';
         <article class="update-card">
           <div class="card-top">
             <div class="product">
-              <span class="product-icon"><img class="github-icon" src="icons/github.svg" alt=""></span>
+              <span class="product-icon"><img class="github-icon" [src]="'GitHub' | productIcon" alt=""></span>
               <span>GitHub</span>
             </div>
             <span class="badge ">New</span>
@@ -92,7 +93,7 @@ import { Component } from '@angular/core';
         <article class="update-card">
           <div class="card-top">
             <div class="product">
-              <span class="product-icon"><img src="icons/fabric.svg" alt=""></span>
+              <span class="product-icon"><img [src]="'Fabric' | productIcon" alt=""></span>
               <span>Fabric</span>
             </div>
             <span class="badge ">Generally available</span>
@@ -110,7 +111,7 @@ import { Component } from '@angular/core';
         <article class="update-card">
           <div class="card-top">
             <div class="product">
-              <span class="product-icon"><img src="icons/azure.svg" alt=""></span>
+              <span class="product-icon"><img [src]="'Azure' | productIcon" alt=""></span>
               <span>Azure</span>
             </div>
             <span class="badge preview">Preview</span>
@@ -128,7 +129,7 @@ import { Component } from '@angular/core';
         <article class="update-card">
           <div class="card-top">
             <div class="product">
-              <span class="product-icon"><img src="icons/foundry.svg" alt=""></span>
+              <span class="product-icon"><img [src]="'Microsoft Foundry' | productIcon" alt=""></span>
               <span>Microsoft Foundry</span>
             </div>
             <span class="badge ">New</span>

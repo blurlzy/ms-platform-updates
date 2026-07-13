@@ -5,9 +5,33 @@
   <title>Microsoft Cloud & AI Platform Updates</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="ms-icon.svg">
 </head>
+  <style>
+    .loader {
+      margin: 450px auto 0;
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #9a1a41;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 <body>
-  <app-root></app-root>
+      <app-root>
+        <!-- loader will be replaced by anagular components once the initialization is completed -->
+        <div class="loader"></div>
+    </app-root>
 </body>
 </html>
