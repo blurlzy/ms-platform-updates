@@ -13,7 +13,7 @@ import { Pager } from '../components/pager';
   template: ` 
       <section class="hero">
         <p class="eyebrow">One feed. Every important update.</p>
-        <h1>Stay current without<br />the noise.</h1>
+        <!-- <h1>Stay current without<br />the noise.</h1> -->
         <p class="hero-copy">
           The latest updates from the Microsoft Cloud & AI ecosystem.
         </p>
@@ -78,7 +78,6 @@ export class LatestUpdates {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly dataService = inject(DataService);
-  private readonly filterSources = ['azure', 'microsoft foundry', 'github', 'microsoft fabric', 'microsoft 365'];
 
   // default page size
   readonly pageSize = 12;
@@ -121,10 +120,11 @@ export class LatestUpdates {
     this.router.navigate(['/'], {
       queryParams: {        
         source: source,
-        pageIndex: 0,
+        pageIndex: 0, // reset page index
         pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
       }
     });
+    
   }
 
   selectPage(newPageIndex: number) {
@@ -135,6 +135,8 @@ export class LatestUpdates {
         pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
       }
     });
+    // ensure it scrolls to the top of the page
+    window.scroll(0, 0);
   }
 
   private getUpdates(source: string, pageIndex: number, pageSize: number) { 

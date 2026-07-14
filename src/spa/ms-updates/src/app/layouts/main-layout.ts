@@ -1,17 +1,16 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { DataService } from '../modules/ms-updates/ms-data.service';
+import { Loader } from '../core/services/loader.service';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink],
   template: ` 
-    <div
-        class="progress-bar"
-        role="progressbar"
-        aria-label="Loading updates"
-      ></div>
+    @if(loader.isLoading | async){
+      <div class="progress-bar" role="progressbar" aria-label="Loading updates"></div>
+    }
+    
     <header class="site-header">
       <a class="brand" routerLink="/" aria-label="Microsoft Cloud & AI Platform Updates home">
         <span class="brand-mark" aria-hidden="true">
@@ -85,8 +84,8 @@ import { DataService } from '../modules/ms-updates/ms-data.service';
   `,
 })
 export class MainLayout {
+  public readonly loader = inject(Loader);
   private readonly document = inject(DOCUMENT);
-  protected readonly dataService = inject(DataService);
   protected readonly isDarkTheme = signal(
     (this.document.defaultView?.localStorage.getItem('theme') ?? 'light') === 'dark',
   );

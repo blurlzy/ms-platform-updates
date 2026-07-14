@@ -1,1 +1,10 @@
+@if (errorHandler.message(); as errorMessage) {
+	<div class="error-banner" role="alert">
+		<span>{{ errorMessage }}</span>
+		<button type="button" aria-label="Dismiss error" (click)="errorHandler.dismiss()">
+			Dismiss
+		</button>
+	</div>
+}
+
 <router-outlet></router-outlet>

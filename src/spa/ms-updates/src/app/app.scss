@@ -1,0 +1,24 @@
+.error-banner {
+	align-items: center;
+	background: #d13438;
+	color: #fff;
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	padding: 0.875rem 1rem;
+}
+
+.error-banner button {
+	background: transparent;
+	border: 1px solid currentcolor;
+	border-radius: 0.25rem;
+	color: inherit;
+	cursor: pointer;
+	font: inherit;
+	padding: 0.25rem 0.5rem;
+}
+
+.error-banner button:hover,
+.error-banner button:focus-visible {
+	background: rgb(255 255 255 / 20%);
+}
