@@ -31,7 +31,8 @@ builder.Services.AddSingleton(new CosmosDataService(cosmosConn, cosmosDb, cosmos
 // cors
 string[] allowedOrigins = new[]
                     {
-                         "http://localhost:4200"
+                         "http://localhost:4200",
+                         "https://lively-moss-0c406fb00.7.azurestaticapps.net",
                     };
 
 // cors policy
