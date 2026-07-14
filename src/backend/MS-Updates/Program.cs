@@ -33,6 +33,7 @@ string[] allowedOrigins = new[]
                     {
                          "http://localhost:4200",
                          "https://lively-moss-0c406fb00.7.azurestaticapps.net",
+                         "https://msupdates.zongyi.me"
                     };
 
 // cors policy
