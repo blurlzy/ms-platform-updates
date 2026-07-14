@@ -43,7 +43,7 @@ import { TitleBracketPipe } from '../../../core/pipes/title-bracket.pipe';
   styles: `
     :host {
       display: block;
-      min-height: 580px;
+      min-height: 500px;
     }
 
     .update-card {

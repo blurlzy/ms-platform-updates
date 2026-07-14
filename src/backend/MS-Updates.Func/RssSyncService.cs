@@ -1,0 +1,108 @@
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
+using MS_Updates.Func.Auth;
+using MS_Updates.Func.Persistence;
+using MS_Updates.Func.Rss;
+
+
+namespace MS_Updates.Func;
+
+public class RssSyncService
+{
+     // http client
+     private readonly HttpClient _httpClient;
+     // rss services
+     private readonly AzureRssService _azureRssService;
+     private readonly FoundryRssService _foundryRssService;
+     private readonly GitHubRssService _githubRssService;
+
+     // cosmos db service
+     private readonly CosmosDataService _cosmosDataService;
+
+     private readonly ILogger _logger;
+
+     // ctor
+     public RssSyncService(ILoggerFactory loggerFactory)
+     {
+          _logger = loggerFactory.CreateLogger<RssSyncService>();
+
+          // logging
+          _logger.LogInformation("Initializing Comsmos Data service....");
+
+          // cosmos connection
+          string cosmosConnection = SecretManager.GetSecret(SecretKeys.CosmosConnection);
+          string cosmosDb = SecretManager.GetSecret(SecretKeys.CosmosDb);
+          string containerName = SecretManager.GetSecret(SecretKeys.CosmosContainer);
+
+          // Configure JsonSerializerOptions
+          var options = new CosmosClientOptions
+          {
+               SerializerOptions = new CosmosSerializationOptions
+               {
+                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+               },
+          };
+          var cosmosClient = new CosmosClient(cosmosConnection, options);
+          var cosmosContainer = cosmosClient.GetContainer(cosmosDb, containerName);
+
+          _cosmosDataService = new CosmosDataService(cosmosContainer);
+
+          // logging
+          _logger.LogInformation("Initializing RSS service....");
+
+          _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(20) };
+
+          _azureRssService = new AzureRssService(_httpClient);
+          _foundryRssService = new FoundryRssService(_httpClient);
+          _githubRssService = new GitHubRssService(_httpClient);
+     }
+
+
+     // This function will be triggered every day at 12:00 AM and 12:00 PM UTC
+     // it syncs the RSS feeds for Azure, Foundry, and other MS platform / product updates 
+     [Function("RssSyncService")]
+     public async Task Run([TimerTrigger("0 0 0,12 * * *", RunOnStartup = true)] TimerInfo myTimer)
+     {
+          _logger.LogInformation("C# Timer trigger function executed at: {executionTime}", DateTime.Now);
+
+          _logger.LogInformation("Loading Azure updates...");
+          var azureUpdates = await _azureRssService.GetUpdatesAsync();
+
+          _logger.LogInformation("Loaded {count} Azure updates.", azureUpdates.Count);
+
+          if (azureUpdates.Count > 0)
+          {
+               _logger.LogInformation("Saving Azure updates...");
+               await _cosmosDataService.SaveAzureUpdatesAsync(azureUpdates);
+          }
+
+
+          _logger.LogInformation("Loading Foundry updates...");
+          var foundryUpdates = await _foundryRssService.GetUpdatesAsync();
+
+          _logger.LogInformation("Loaded {count} Foundry updates.", foundryUpdates.Count);
+
+          if (foundryUpdates.Count > 0)
+          {
+               _logger.LogInformation("Saving Foundry updates...");
+               await _cosmosDataService.SaveFoundryUpdatesAsync(foundryUpdates);
+          }
+
+          _logger.LogInformation("Loading GitHub updates....");
+          var githubUpdates = await _githubRssService.GetLatestAsync();
+
+          _logger.LogInformation("Loaded {count} GitHub updates.", githubUpdates.Count);
+
+          if (githubUpdates.Count > 0)
+          {
+               _logger.LogInformation("Saving GitHub updates...");
+               await _cosmosDataService.SaveGitHubUpdatesAsync(githubUpdates);
+          }
+
+          //if (myTimer.ScheduleStatus is not null)
+          //{
+          //     _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);
+          //}
+     }
+}

@@ -5,8 +5,10 @@ const PRODUCT_ICONS: Record<string, string> = {
   fabric: 'assets/icons/fabric.svg',
   github: 'assets/icons/github.svg',
   foundry: 'assets/icons/foundry.svg',
+  copilot365: 'assets/icons/copilot-color.svg',
   'microsoft foundry': 'assets/icons/foundry.svg',
-  'microsoft fabric': 'assets/icons/fabric.svg'
+  'microsoft fabric': 'assets/icons/fabric.svg',
+  'microsoft copilot 365': 'assets/icons/copilot-color.svg'
 };
 
 @Pipe({

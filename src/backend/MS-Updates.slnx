@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="push_image_ACR.ps1" />
+  </Folder>
+  <Project Path="MS-Updates.Func/MS-Updates.Func.csproj" Id="fcbc7759-dcfd-49ed-9d65-ee0123a6b748" />
   <Project Path="MS-Updates.Tests/MS-Updates.Tests.csproj" Id="61fa1436-0468-4a9a-aff5-0cdcd6a2885f" />
   <Project Path="MS-Updates/MS-Updates.csproj" />
 </Solution>

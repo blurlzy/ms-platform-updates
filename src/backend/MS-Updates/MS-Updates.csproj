@@ -5,12 +5,15 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>MS_Updates</RootNamespace>
+    <UserSecretsId>231c9183-00fe-4252-a7dc-1ab9cacea17f</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
 	  <PackageReference Include="Azure.Identity" Version="1.21.0" />
 	  <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.11.0" />
       <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.5.1" />
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.61.0" />
   </ItemGroup>

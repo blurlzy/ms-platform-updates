@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MS-Updates.Func\MS-Updates.Func.csproj" />
     <ProjectReference Include="..\MS-Updates\MS-Updates.csproj" />
   </ItemGroup>
 

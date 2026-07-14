@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "MS_Updates.Func": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7070",
+      "launchBrowser": false
+    }
+  }
+}
