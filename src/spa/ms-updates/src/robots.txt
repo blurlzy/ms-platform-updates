@@ -1,0 +1,6 @@
+# Robots.txt file for zongyi.me
+
+User-agent: *
+Allow: /
+
+Sitemap: https://zongyi.me/sitemap.xml

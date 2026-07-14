@@ -16,6 +16,7 @@ public class RssSyncService
      private readonly AzureRssService _azureRssService;
      private readonly FoundryRssService _foundryRssService;
      private readonly GitHubRssService _githubRssService;
+     private readonly Copilot365RssService _copilot365RssService;
 
      // cosmos db service
      private readonly CosmosDataService _cosmosDataService;
@@ -56,6 +57,7 @@ public class RssSyncService
           _azureRssService = new AzureRssService(_httpClient);
           _foundryRssService = new FoundryRssService(_httpClient);
           _githubRssService = new GitHubRssService(_httpClient);
+          _copilot365RssService = new Copilot365RssService(_httpClient);
      }
 
 
@@ -68,7 +70,6 @@ public class RssSyncService
 
           _logger.LogInformation("Loading Azure updates...");
           var azureUpdates = await _azureRssService.GetUpdatesAsync();
-
           _logger.LogInformation("Loaded {count} Azure updates.", azureUpdates.Count);
 
           if (azureUpdates.Count > 0)
@@ -80,7 +81,6 @@ public class RssSyncService
 
           _logger.LogInformation("Loading Foundry updates...");
           var foundryUpdates = await _foundryRssService.GetUpdatesAsync();
-
           _logger.LogInformation("Loaded {count} Foundry updates.", foundryUpdates.Count);
 
           if (foundryUpdates.Count > 0)
@@ -89,9 +89,19 @@ public class RssSyncService
                await _cosmosDataService.SaveFoundryUpdatesAsync(foundryUpdates);
           }
 
+          _logger.LogInformation("Loading MS Copilot 365 updates...");
+          var copilot365Updates = await _copilot365RssService.GetUpdatesAsync();
+          _logger.LogInformation("Loaded {count} MS Copilot 365 updates.", copilot365Updates.Count);
+
+          if (copilot365Updates.Count > 0)
+          {
+               _logger.LogInformation("Saving MS Copilot 365 updates...");
+               await _cosmosDataService.SaveCopilot365UpdatesAsync(copilot365Updates);
+          }
+
+
           _logger.LogInformation("Loading GitHub updates....");
           var githubUpdates = await _githubRssService.GetLatestAsync();
-
           _logger.LogInformation("Loaded {count} GitHub updates.", githubUpdates.Count);
 
           if (githubUpdates.Count > 0)
@@ -100,6 +110,7 @@ public class RssSyncService
                await _cosmosDataService.SaveGitHubUpdatesAsync(githubUpdates);
           }
 
+          
           //if (myTimer.ScheduleStatus is not null)
           //{
           //     _logger.LogInformation("Next timer schedule at: {nextSchedule}", myTimer.ScheduleStatus.Next);

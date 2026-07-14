@@ -33,7 +33,10 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "/assets"
-              }
+              },
+              "src/staticwebapp.config.json",
+              "src/robots.txt",
+              "src/ads.txt"
             ],
             "styles": [
               "src/styles.scss"
