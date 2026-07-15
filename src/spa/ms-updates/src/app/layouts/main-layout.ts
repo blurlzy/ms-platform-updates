@@ -39,11 +39,10 @@ import { Loader } from '../core/services/loader.service';
 
     <footer>
       <span>zongyi.me 🚀 All rights reserved</span>
-      <p>Your shortcut to Microsoft Cloud & AI updates.</p>
       <a class="social-link" href="https://www.linkedin.com/in/zongyi-li-88445515/" target="_blank" rel="noreferrer">
-        <img src="assets/icons/linkedin.svg" alt="" />
-      
-      </a>  
+        <img src="assets/icons/linkedin.svg" alt="" />      
+      </a>
+         <a style="cursor: pointer;" (click)="backToTop()">Back to top ↑</a>
     </footer>
   `,
   styles: `
@@ -108,5 +107,9 @@ export class MainLayout {
     } else {
       this.document.documentElement.removeAttribute('data-theme');
     }
+  }
+
+  backToTop(): void {
+    this.document.defaultView?.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
