@@ -39,10 +39,15 @@ import { Loader } from '../core/services/loader.service';
 
     <footer>
       <span>zongyi.me 🚀 All rights reserved</span>
-      <a class="social-link" href="https://www.linkedin.com/in/zongyi-li-88445515/" target="_blank" rel="noreferrer">
-        <img src="assets/icons/linkedin.svg" alt="" />      
-      </a>
-         <a style="cursor: pointer;" (click)="backToTop()">Back to top ↑</a>
+      <span>
+        <a class="social-link" href="https://github.com/blurlzy/ms-platform-updates" target="_blank" rel="noreferrer">
+          <img src="assets/icons/github.svg" alt="" />
+        </a>
+        <a class="social-link" href="https://www.linkedin.com/in/zongyi-li-88445515/" target="_blank" rel="noreferrer">
+          <img src="assets/icons/linkedin.svg" alt="" />      
+        </a>
+      </span>  
+      <a style="cursor: pointer;" (click)="backToTop()">Back to top ↑</a>
     </footer>
   `,
   styles: `
