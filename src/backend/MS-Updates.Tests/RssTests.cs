@@ -62,5 +62,19 @@ namespace MS_Updates.Tests
                // save to cosmos
                await _cosmosDataService.SaveCopilot365UpdatesAsync(rssItems);
           }
+
+          [Fact]
+          public async Task Read_Fabric_Rss_Test()
+          {
+               var fabricRssService = new FabricRssService(_httpClient);
+               var rssItems = await fabricRssService.GetUpdatesAsync();
+               foreach (var item in rssItems)
+               {
+                    _output.WriteLine($"{item.Title} - {item.Link}");
+               }
+
+               // save to cosmos
+               await _cosmosDataService.SaveFabricUpdatesAsync(rssItems);
+          } 
      }
 }

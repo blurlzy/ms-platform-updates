@@ -15,6 +15,7 @@ public class RssSyncService
      // rss services
      private readonly AzureRssService _azureRssService;
      private readonly FoundryRssService _foundryRssService;
+     private readonly FabricRssService _fabricRssService;
      private readonly GitHubRssService _githubRssService;
      private readonly Copilot365RssService _copilot365RssService;
 
@@ -56,6 +57,7 @@ public class RssSyncService
 
           _azureRssService = new AzureRssService(_httpClient);
           _foundryRssService = new FoundryRssService(_httpClient);
+          _fabricRssService = new FabricRssService(_httpClient);
           _githubRssService = new GitHubRssService(_httpClient);
           _copilot365RssService = new Copilot365RssService(_httpClient);
      }
@@ -68,48 +70,63 @@ public class RssSyncService
      {
           _logger.LogInformation("C# Timer trigger function executed at: {executionTime}", DateTime.Now);
 
-          _logger.LogInformation("Loading Azure updates...");
-          var azureUpdates = await _azureRssService.GetUpdatesAsync();
-          _logger.LogInformation("Loaded {count} Azure updates.", azureUpdates.Count);
-
-          if (azureUpdates.Count > 0)
+          try
           {
-               _logger.LogInformation("Saving Azure updates...");
-               await _cosmosDataService.SaveAzureUpdatesAsync(azureUpdates);
+               _logger.LogInformation("Loading Azure updates...");
+               var azureUpdates = await _azureRssService.GetUpdatesAsync();
+               _logger.LogInformation("Loaded {count} Azure updates.", azureUpdates.Count);
+
+               if (azureUpdates.Count > 0)
+               {
+                    _logger.LogInformation("Saving Azure updates...");
+                    await _cosmosDataService.SaveAzureUpdatesAsync(azureUpdates);
+               }
+
+               _logger.LogInformation("Loading Fabric updates...");
+               var fabricUpdates = await _fabricRssService.GetUpdatesAsync();
+               _logger.LogInformation("Loaded {count} Fabric updates.", fabricUpdates.Count);
+
+               if (fabricUpdates.Count > 0)
+               {
+                    _logger.LogInformation("Saving Fabric updates...");
+                    await _cosmosDataService.SaveFabricUpdatesAsync(fabricUpdates);
+               }
+
+               _logger.LogInformation("Loading Foundry updates...");
+               var foundryUpdates = await _foundryRssService.GetUpdatesAsync();
+               _logger.LogInformation("Loaded {count} Foundry updates.", foundryUpdates.Count);
+
+               if (foundryUpdates.Count > 0)
+               {
+                    _logger.LogInformation("Saving Foundry updates...");
+                    await _cosmosDataService.SaveFoundryUpdatesAsync(foundryUpdates);
+               }
+
+               _logger.LogInformation("Loading MS Copilot 365 updates...");
+               var copilot365Updates = await _copilot365RssService.GetUpdatesAsync();
+               _logger.LogInformation("Loaded {count} MS Copilot 365 updates.", copilot365Updates.Count);
+
+               if (copilot365Updates.Count > 0)
+               {
+                    _logger.LogInformation("Saving MS Copilot 365 updates...");
+                    await _cosmosDataService.SaveCopilot365UpdatesAsync(copilot365Updates);
+               }
+
+
+               _logger.LogInformation("Loading GitHub updates....");
+               var githubUpdates = await _githubRssService.GetLatestAsync();
+               _logger.LogInformation("Loaded {count} GitHub updates.", githubUpdates.Count);
+
+               if (githubUpdates.Count > 0)
+               {
+                    _logger.LogInformation("Saving GitHub updates...");
+                    await _cosmosDataService.SaveGitHubUpdatesAsync(githubUpdates);
+               }
           }
-
-
-          _logger.LogInformation("Loading Foundry updates...");
-          var foundryUpdates = await _foundryRssService.GetUpdatesAsync();
-          _logger.LogInformation("Loaded {count} Foundry updates.", foundryUpdates.Count);
-
-          if (foundryUpdates.Count > 0)
+          catch (Exception ex)
           {
-               _logger.LogInformation("Saving Foundry updates...");
-               await _cosmosDataService.SaveFoundryUpdatesAsync(foundryUpdates);
+               _logger.LogError(ex, "An error occurred while syncing RSS feeds.");
           }
-
-          _logger.LogInformation("Loading MS Copilot 365 updates...");
-          var copilot365Updates = await _copilot365RssService.GetUpdatesAsync();
-          _logger.LogInformation("Loaded {count} MS Copilot 365 updates.", copilot365Updates.Count);
-
-          if (copilot365Updates.Count > 0)
-          {
-               _logger.LogInformation("Saving MS Copilot 365 updates...");
-               await _cosmosDataService.SaveCopilot365UpdatesAsync(copilot365Updates);
-          }
-
-
-          _logger.LogInformation("Loading GitHub updates....");
-          var githubUpdates = await _githubRssService.GetLatestAsync();
-          _logger.LogInformation("Loaded {count} GitHub updates.", githubUpdates.Count);
-
-          if (githubUpdates.Count > 0)
-          {
-               _logger.LogInformation("Saving GitHub updates...");
-               await _cosmosDataService.SaveGitHubUpdatesAsync(githubUpdates);
-          }
-
           
           //if (myTimer.ScheduleStatus is not null)
           //{

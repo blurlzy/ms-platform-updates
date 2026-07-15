@@ -41,7 +41,7 @@ namespace MS_Updates.Func.Persistence
                return items;
           }
 
-          // sync azure updates
+          // save azure updates
           public async Task SaveAzureUpdatesAsync(IEnumerable<AzureUpdate> updates, CancellationToken cancellationToken = default)
           {
                // get min and max published date from the updates
@@ -115,6 +115,40 @@ namespace MS_Updates.Func.Persistence
                           foundryUpdate.Creator,
                           foundryUpdate.PublishedAt,
                           foundryUpdate.UpdatedAt
+                    );
+                    // save into cosmos db
+                    await _container.CreateItemAsync(item, new PartitionKey(item.Partition));
+               }
+          }
+
+          // save fabric updates
+          public async Task SaveFabricUpdatesAsync(IEnumerable<FabricUpdate> updates, CancellationToken cancellationToken = default)
+          {
+               // get min and max published date from the updates
+               var minPublishedDate = updates.Min(u => u.PublishedAt)?.AddDays(-1).ToUniversalTime() ?? DateTimeOffset.UtcNow;
+               var maxPublishedDate = updates.Max(m => m.PublishedAt)?.ToUniversalTime() ?? DateTimeOffset.UtcNow;
+               // load the existing updates from the db with date range
+               var existingUpdates = await GetItemsAsync(UpdateSources.Fabric, minPublishedDate, maxPublishedDate, cancellationToken);
+               foreach (var fabricUpdate in updates)
+               {
+                    // check updated date, if its the same, skip it
+                    var existingUpdate = existingUpdates.FirstOrDefault(e => e.RssItemId == fabricUpdate.Id);
+                    // check if it already exists by rss item id
+                    if (existingUpdate != null && existingUpdate.PublishedAt == fabricUpdate.PublishedAt)
+                    {
+                         continue;
+                    }
+                    // save the new update to the db
+                    var item = new CosmosItem(
+                          fabricUpdate.Id,
+                          UpdateSources.Fabric,
+                          fabricUpdate.Link,
+                          fabricUpdate.Title,
+                          Util.ExtractFirstParagraph(fabricUpdate.DescriptionHtml), // only save the first paragraph of the description
+                          Array.Empty<string>(),
+                          fabricUpdate.Creator,
+                          fabricUpdate.PublishedAt,
+                          fabricUpdate.CreatedAt
                     );
                     // save into cosmos db
                     await _container.CreateItemAsync(item, new PartitionKey(item.Partition));
