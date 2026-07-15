@@ -48,7 +48,7 @@ import { Pager } from '../components/pager';
         <div class="filter-row" id="filterRow" aria-label="Filter by product">
           <button class="filter" [class.active]="filterFormGroup.value.source === ''" type="button" (click)="selectSourceFilter('')">All updates</button>
           <button class="filter" [class.active]="filterFormGroup.value.source === 'azure'" type="button" (click)="selectSourceFilter('azure')">Azure</button>
-          <button class="filter" [class.active]="filterFormGroup.value.source === 'microsoft foundry'" type="button" (click)="selectSourceFilter('microsoft fabric')">Microsoft Fabric</button>
+          <button class="filter" [class.active]="filterFormGroup.value.source === 'microsoft fabric'" type="button" (click)="selectSourceFilter('microsoft fabric')">Microsoft Fabric</button>
           <button class="filter" [class.active]="filterFormGroup.value.source === 'microsoft foundry'" type="button" (click)="selectSourceFilter('microsoft foundry')">Microsoft Foundry</button>
           <button class="filter" [class.active]="filterFormGroup.value.source === 'github'" type="button" (click)="selectSourceFilter('github')">GitHub</button>
           <button class="filter" [class.active]="filterFormGroup.value.source === 'microsoft copilot 365'" type="button" (click)="selectSourceFilter('microsoft copilot 365')">Microsoft Copilot 365</button>
