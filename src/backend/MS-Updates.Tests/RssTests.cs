@@ -75,6 +75,19 @@ namespace MS_Updates.Tests
 
                // save to cosmos
                await _cosmosDataService.SaveFabricUpdatesAsync(rssItems);
-          } 
+          }
+
+          [Fact]
+          public async Task Read_GitHub_Rss_Test()
+          {
+               var gitHubRssService = new GitHubRssService(_httpClient);
+               var rssItems = await gitHubRssService.GetLatestAsync();
+               foreach (var item in rssItems)
+               {
+                    _output.WriteLine($"{item.Title} - {item.Url}");
+               }
+               // save to cosmos
+               //await _cosmosDataService.SaveGitHubUpdatesAsync(rssItems);
+          }
      }
 }

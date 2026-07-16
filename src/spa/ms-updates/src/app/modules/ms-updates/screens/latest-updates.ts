@@ -106,7 +106,7 @@ export class LatestUpdates {
       // reset the result      			
       this.pagedList.set({ data: [], total: 0 });
       // ensure it scrolls to the top of the page
-      // window.scroll(0, 0);
+      window.scroll(0, 160);
       // retrieve the updates based on the query params
       this.getUpdates(this.filterFormGroup.value.source ?? '', 
                       this.filterFormGroup.value.pageIndex ?? 0, 
@@ -137,7 +137,7 @@ export class LatestUpdates {
       }
     });
     // ensure it scrolls to the top of the page
-    window.scroll(0, 0);
+    // window.scroll(0, 0);
   }
 
   private getUpdates(source: string, pageIndex: number, pageSize: number) { 
