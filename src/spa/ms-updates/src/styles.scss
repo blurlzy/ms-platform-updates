@@ -438,6 +438,12 @@ kbd {
   color: var(--cp-accent);
 }
 
+.warning-icon {
+  color: var(--cp-danger);
+  font-size: 22px;
+  line-height: 1;
+}
+
 .update-card h3 {
   font-size: 22px;
   font-weight: 650;

@@ -17,8 +17,8 @@ import { TitleBracketPipe } from '../../../core/pipes/title-bracket.pipe';
                 <span class="product-icon"><img [src]="item.source | productIcon" alt=""></span>
                 <span>{{ item.source }}</span>
               </div>
-              @if (item.title | titleBracket; as badge) {
-                <span class="badge">{{ badge }}</span>
+              @if (item.title | titleBracket) {
+                <span class="warning-icon" role="img" title="Retirement">&#9888;</span>
               }
             </div>
             <h3>{{ item.title }}</h3>
@@ -34,11 +34,11 @@ import { TitleBracketPipe } from '../../../core/pipes/title-bracket.pipe';
  
         </div>
 
-        <div class="empty-state" hidden>
+        <!-- <div class="empty-state" hidden>
           <h3>No updates found</h3>
           <p>Try another search term or select a different product.</p>
           <button id="clearFilters" type="button">Clear filters</button>
-        </div>     
+        </div>      -->
   `,
   styles: `
     :host {

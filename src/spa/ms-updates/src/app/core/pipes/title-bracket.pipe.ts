@@ -6,20 +6,9 @@ type TitleSource = { title?: string | null } | string | null | undefined;
   name: 'titleBracket',
 })
 export class TitleBracketPipe implements PipeTransform {
-  transform(value: TitleSource): string {
+  transform(value: TitleSource): boolean {
     const title = typeof value === 'string' ? value : value?.title;
 
-    if (!title) {
-      return '';
-    }
-
-    const openingBracketIndex = title.indexOf('[');
-    const closingBracketIndex = title.indexOf(']', openingBracketIndex + 1);
-
-    if (openingBracketIndex === -1 || closingBracketIndex === -1) {
-      return '';
-    }
-
-    return title.slice(openingBracketIndex + 1, closingBracketIndex).trim();
+    return title?.toLocaleLowerCase().includes('retirement') ?? false;
   }
 }
