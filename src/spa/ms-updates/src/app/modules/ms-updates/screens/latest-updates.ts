@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DOCUMENT, inject, signal } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 // service
@@ -79,6 +79,7 @@ export class LatestUpdates {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly dataService = inject(DataService);
+  private readonly document = inject(DOCUMENT);
 
   // default page size
   readonly pageSize = 12;
@@ -104,9 +105,9 @@ export class LatestUpdates {
       });
 
       // reset the result      			
-      this.pagedList.set({ data: [], total: 0 });
+      // this.pagedList.set({ data: [], total: 0 });
       // ensure it scrolls to the top of the page
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.document.defaultView?.scrollTo({ top: 0, behavior: 'smooth' });
       // retrieve the updates based on the query params
       this.getUpdates(this.filterFormGroup.value.source ?? '', 
                       this.filterFormGroup.value.pageIndex ?? 0, 
