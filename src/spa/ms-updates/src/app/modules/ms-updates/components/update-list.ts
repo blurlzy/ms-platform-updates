@@ -41,10 +41,10 @@ import { TitleBracketPipe } from '../../../core/pipes/title-bracket.pipe';
         </div>      -->
   `,
   styles: `
-    :host {
-      display: block;
-      min-height: 580px;
-    }
+    // :host {
+    //   display: block;
+    //   min-height: 580px;
+    // }
 
     .update-card {
       animation: fade-in 150ms ease-out both;

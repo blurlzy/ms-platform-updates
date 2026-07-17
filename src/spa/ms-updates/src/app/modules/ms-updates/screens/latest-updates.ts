@@ -106,7 +106,7 @@ export class LatestUpdates {
       // reset the result      			
       this.pagedList.set({ data: [], total: 0 });
       // ensure it scrolls to the top of the page
-      // window.scroll(0, 160);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       // retrieve the updates based on the query params
       this.getUpdates(this.filterFormGroup.value.source ?? '', 
                       this.filterFormGroup.value.pageIndex ?? 0, 
@@ -128,17 +128,15 @@ export class LatestUpdates {
     
   }
 
-  async selectPage(newPageIndex: number) {
+  selectPage(newPageIndex: number) {
     // update the page index in the query string, which will trigger the query params changes event
-    await this.router.navigate(['/'], {
+    this.router.navigate(['/'], {
       queryParams: {
         source: this.filterFormGroup.value.source ?? '',
         pageIndex: newPageIndex,
         pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
       }
     });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 
   }
 
