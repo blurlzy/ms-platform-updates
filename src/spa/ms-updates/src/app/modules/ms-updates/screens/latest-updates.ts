@@ -128,17 +128,17 @@ export class LatestUpdates {
     
   }
 
-  selectPage(newPageIndex: number) {
-    // ensure it scrolls to the top of the page
-    window.scroll(0, 0);
+  async selectPage(newPageIndex: number) {
     // update the page index in the query string, which will trigger the query params changes event
-    this.router.navigate(['/'], {
+    await this.router.navigate(['/'], {
       queryParams: {
         source: this.filterFormGroup.value.source ?? '',
         pageIndex: newPageIndex,
         pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
       }
     });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
   }
 
