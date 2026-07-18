@@ -1,6 +1,6 @@
 # push the image to ACR
-$rgName="RG-Shared"
-$acrName="acrzl"
+$rgName="<rg-group-for-acr>"
+$acrName="<acr-name>"
 
 # push the image to ACR, Queues a quick build
 # --image: The name and tag of the image using the format: '-t repo/image:tag'. Multiple tags are supported by passing -t multiple times.

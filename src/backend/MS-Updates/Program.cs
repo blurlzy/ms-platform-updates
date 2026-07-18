@@ -3,6 +3,7 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using MS_Updates.Auth;
 using MS_Updates.Extensions;
+using MS_Updates.Filters;
 using MS_Updates.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,7 +53,6 @@ app.UseGlobalExceptionHandler(app.Logger);
 app.UseHttpsRedirection();
 app.UseCors("allowCors");
 
-
 // map endpoints
 app.MapGet("/api/ms-updates", async (CosmosDataService cosmosDataService, string? source = null, int pageIndex = 0, int pageSize = 12) =>
 {
@@ -61,7 +61,8 @@ app.MapGet("/api/ms-updates", async (CosmosDataService cosmosDataService, string
           : await cosmosDataService.ListUpdatesAsync(source, pageIndex, pageSize);
 
      return Results.Ok(updates);
-});
+})
+.AddEndpointFilter<PagingValidationFilter>();
 
 
 app.Run();
