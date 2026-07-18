@@ -33,7 +33,7 @@ namespace MS_Updates.Models
                           string source,
                           string link,
                           string title,
-                          string desc,
+                          string description,
                           string[] categories,
                           string? creator,
                           DateTimeOffset? publishedAt,
@@ -45,7 +45,7 @@ namespace MS_Updates.Models
             this.Source = source;
             this.Link = link;
             this.Title = title;
-            this.Description = desc;
+            this.Description = description;
             this.Categories = categories;
             this.Creator = creator;
             this.PublishedAt = publishedAt;

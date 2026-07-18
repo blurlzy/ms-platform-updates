@@ -6,9 +6,9 @@
         public IReadOnlyCollection<T> Data { get; private set; }
 
         // ctor
-        public PagedList(int count, IReadOnlyCollection<T> data)
+        public PagedList(int total, IReadOnlyCollection<T> data)
         {
-            Total = count;
+            Total = total;
             Data = data;
         }
 

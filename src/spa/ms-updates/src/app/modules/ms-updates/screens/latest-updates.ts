@@ -65,7 +65,7 @@ import { Pager } from '../components/pager';
 
         <app-pager
           [pageIndex]="filterFormGroup.value.pageIndex ?? 0"
-          [pageSize]="filterFormGroup.value.pageSize ?? pageSize"
+          [pageSize]="pageSize"
           [totalItems]="pagedList().total"
           (pageChange)="selectPage($event)"
         ></app-pager>
@@ -82,22 +82,23 @@ export class LatestUpdates {
   private readonly document = inject(DOCUMENT);
 
   // default page size
-  readonly pageSize = 12;
+  readonly pageSize = 16;
   // properties
   pagedList = signal<any>({ data: [], total: 0 });
   // filter form group
   filterFormGroup = new FormGroup({
     source: new FormControl(''),
-    pageSize: new FormControl(this.pageSize),
+    // pageSize: new FormControl(this.pageSize),
     pageIndex: new FormControl(0)
   });
 
   ngOnInit() {
     // query params changes
     this.activatedRoute.queryParams.subscribe((params) => {
-      const pageIndex = +params['pageIndex'];
-      //const source = String(params['source'] ?? '');
-
+      let pageIndex = +params['pageIndex'];
+      // ensure page index is a number and not negative
+      pageIndex = pageIndex < 0 ? 0 : pageIndex;
+      
       // retrive the query params
       this.filterFormGroup.patchValue({
         source: params['source'] ?? '',
@@ -111,7 +112,7 @@ export class LatestUpdates {
       // retrieve the updates based on the query params
       this.getUpdates(this.filterFormGroup.value.source ?? '', 
                       this.filterFormGroup.value.pageIndex ?? 0, 
-                      this.filterFormGroup.value.pageSize ?? this.pageSize);  
+                      this.pageSize);  
 
     });
   }
@@ -123,7 +124,7 @@ export class LatestUpdates {
       queryParams: {        
         source: source,
         pageIndex: 0, // reset page index
-        pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
+        // pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
       }
     });
     
@@ -135,7 +136,7 @@ export class LatestUpdates {
       queryParams: {
         source: this.filterFormGroup.value.source ?? '',
         pageIndex: newPageIndex,
-        pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
+        // pageSize: this.filterFormGroup.value.pageSize ?? this.pageSize
       }
     });
 
