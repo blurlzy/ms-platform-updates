@@ -9,15 +9,17 @@ namespace MS_Updates.Filters
                var query = context.HttpContext.Request.Query;
                var pageIndex = GetQueryValue(query, "pageIndex");
                var pageSize = GetQueryValue(query, "pageSize");
-
+               
+               // validate page index
                if (pageIndex < 0)
                {
                     return ValueTask.FromResult<object?>(Results.BadRequest(new { error = "pageIndex must be greater than or equal to 0." }));
                }
 
-               if (pageSize > MaxPageSize || pageSize <= 0)
+               // validate page size (min is 10)
+               if (pageSize > MaxPageSize || pageSize < 10)
                {
-                    return ValueTask.FromResult<object?>(Results.BadRequest(new { error = $"pageSize must be greater than 0 and less than or equal to {MaxPageSize}." }));
+                    return ValueTask.FromResult<object?>(Results.BadRequest(new { error = $"pageSize must be greater or equal to 10 and less than or equal to {MaxPageSize}." }));
                }
 
                return next(context);

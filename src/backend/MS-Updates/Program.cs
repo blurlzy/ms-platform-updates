@@ -71,7 +71,8 @@ app.MapGet("/api/ms-updates", async (CosmosCacheService cosmosCache, string? sou
 
      return Results.Ok(updates);
 })
-.AddEndpointFilter<PagingValidationFilter>();
+.AddEndpointFilter<PagingValidationFilter>()
+.AddEndpointFilter<SourceValidationFilter>();
 
 // GET / (root endpoint for health check)
 app.MapGet("/", () =>

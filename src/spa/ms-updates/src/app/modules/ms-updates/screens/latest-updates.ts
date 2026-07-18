@@ -83,6 +83,15 @@ export class LatestUpdates {
 
   // default page size
   readonly pageSize = 16;
+  allowedSources = [
+                    '', 
+                    'azure', 
+                    'microsoft fabric', 
+                    'microsoft foundry', 
+                    'github', 
+                    'microsoft copilot 365'
+                  ];
+
   // properties
   pagedList = signal<any>({ data: [], total: 0 });
   // filter form group
@@ -98,10 +107,11 @@ export class LatestUpdates {
       let pageIndex = +params['pageIndex'];
       // ensure page index is a number and not negative
       pageIndex = pageIndex < 0 ? 0 : pageIndex;
-      
+      // ensure the source is part of the allowed sources      
+      const source = params['source'] ?? '';
       // retrive the query params
       this.filterFormGroup.patchValue({
-        source: params['source'] ?? '',
+        source: this.allowedSources.includes(source.toLowerCase()) ? source : '',
         pageIndex: pageIndex ? pageIndex : 0,
       });
 
