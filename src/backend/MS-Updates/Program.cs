@@ -1,7 +1,7 @@
 using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using MS_Updates.Auth;
 using MS_Updates.Extensions;
 using MS_Updates.Filters;
@@ -20,18 +20,35 @@ SecretClient secretClient = new SecretClient(new Uri($"https://{builder.Configur
 // loads secrets into configuration. ## it requres Azure.Extensions.AspNetCore.Configuration.Secrets package
 builder.Configuration.AddAzureKeyVault(secretClient, new KeyVaultSecretManager());
 
-// Add services to the container.
-// load cosmos configs
+// load configs from key vault
 var cosmosConn = builder.Configuration[SecretKeys.CosmosConnection];
 var cosmosDb = builder.Configuration[SecretKeys.CosmosDb];
 var cosmosContainer = builder.Configuration[SecretKeys.CosmosContainer];
-// cosmos db context
-#pragma warning disable CS8604 // Possible null reference argument.
+var appInsightsConnection = builder.Configuration[SecretKeys.AppInsightsConnection];
+
+if (cosmosConn == null || cosmosDb == null || cosmosContainer == null)
+{
+     throw new InvalidOperationException("Cosmos DB configuration is missing.");
+}
+
+if (appInsightsConnection == null)
+{
+     throw new InvalidOperationException("Application Insights configuration is missing.");
+}
+
+// Add services to the container.
+// cosmos data service
 builder.Services.AddSingleton(new CosmosDataService(cosmosConn, cosmosDb, cosmosContainer));
-#pragma warning restore CS8604 // Possible null reference argument.
 
 // cache service
 builder.Services.AddSingleton<CosmosCacheService>();
+
+// cache - install # Microsoft.Extensions.Caching.Hybrid
+builder.Services.AddHybridCache();
+
+// app insights - install # Microsoft.ApplicationInsights.AspNetCore
+var options = new ApplicationInsightsServiceOptions { ConnectionString = appInsightsConnection };
+builder.Services.AddApplicationInsightsTelemetry(options: options);
 
 // cors
 string[] allowedOrigins = new[]
@@ -49,9 +66,6 @@ builder.Services.AddCors(
              builder => builder.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod());
         });
 
-// cache
-// install package Microsoft.Extensions.Caching.Hybrid
-builder.Services.AddHybridCache();
 
 var app = builder.Build();
 

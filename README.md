@@ -1,6 +1,6 @@
 # Microsoft Cloud & AI Platform Updates
 
-A web application that brings product news from the Microsoft Cloud and AI ecosystem into one filterable, paginated feed. It currently aggregates updates from Azure, Microsoft Foundry, Microsoft 365 Copilot, and GitHub.
+A web application that brings product news from the Microsoft Cloud and AI ecosystem into one filterable, paginated feed. It currently aggregates updates from Azure, Microsoft Foundry, Fabric, Microsoft 365 Copilot, and GitHub.
 
 **Live demo:** [MS Cloud & AI Platform Updates](https://msupdates.zongyi.me/)
 
@@ -21,6 +21,7 @@ flowchart LR
 - **Azure Functions worker** polls the upstream RSS feeds at startup and every day at 00:00 and 12:00 UTC.
 - **Azure Cosmos DB** stores the normalized update records.
 - **Azure Key Vault** supplies the Cosmos DB connection settings to both backend services.
+- **Application Insights** monitors the API's performance and usage.
 
 ## Repository Structure
 
@@ -38,12 +39,10 @@ src/
 ## Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- [Node.js](https://nodejs.org/) and npm 
+- [Node.js](https://nodejs.org/)
 - [Angular](https://angular.dev/overview)
 - [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli)
-- [Azure Functions Core Tools v4](https://learn.microsoft.com/azure/azure-functions/functions-run-local) to run the sync worker locally
 - Access to the `kv-ms-updates` Azure Key Vault and its Cosmos DB secrets
-- Optional: [Azurite](https://learn.microsoft.com/azure/storage/common/storage-use-azurite) for local Azure Functions storage
 
 ## Configuration
 
@@ -60,6 +59,7 @@ The signed-in identity needs permission to read these Key Vault secrets:
 | `CosmosConnection` | Cosmos DB connection string |
 | `CosmosDb` | Database name |
 | `CosmosContainer` | Container name |
+| `AppInsightsConnection` | Application Insights connection string |
 
 The API reads the Key Vault name from `src/backend/MS-Updates/appsettings.json`. The Functions project currently uses `kv-ms-updates` directly in its secret manager.
 
@@ -95,33 +95,10 @@ In another terminal:
 ```powershell
 Set-Location src/spa/ms-updates
 npm install
-npm start
+ng serve
 ```
 
 Open `http://localhost:4200`.
-
-### 3. Run the RSS sync worker
-
-The Functions host requires a storage connection for its timer trigger. For local development, create `src/backend/MS-Updates.Func/local.settings.json` with the following content and run Azurite:
-
-```json
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
-  }
-}
-```
-
-Then start the worker:
-
-```powershell
-Set-Location src/backend/MS-Updates.Func
-func start
-```
-
-`RunOnStartup` is enabled, so starting the worker immediately triggers an RSS synchronization.
 
 ## API
 

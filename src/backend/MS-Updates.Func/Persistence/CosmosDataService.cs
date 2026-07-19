@@ -57,11 +57,11 @@ namespace MS_Updates.Func.Persistence
                // 
                foreach (var azureUpdate in updates)
                {
-                    // check updated date, if its the same, skip it
+                    // check its rss item id
                     var existingUpdate = existingUpdates.FirstOrDefault(e => e.RssItemId == azureUpdate.Id);
 
-                    // check if it already exists by rss item id
-                    if (existingUpdate != null && existingUpdate.UpdatedAt == azureUpdate.UpdatedAt)
+                    // if rss item id exists, check if the title is the same, if it is, skip it
+                    if (existingUpdate != null && existingUpdate.Title == azureUpdate.Title)
                     {
                          continue;
                     }
@@ -96,10 +96,10 @@ namespace MS_Updates.Func.Persistence
 
                foreach (var foundryUpdate in updates)
                {
-                    // check updated date, if its the same, skip it
+                    // check its rss item id
                     var existingUpdate = existingUpdates.FirstOrDefault(e => e.RssItemId == foundryUpdate.Id);
-                    // check if it already exists by rss item id
-                    if (existingUpdate != null && existingUpdate.UpdatedAt == foundryUpdate.UpdatedAt)
+                    // if rss item id exists, check if the title is the same, if it is, skip it
+                    if (existingUpdate != null && existingUpdate.Title == foundryUpdate.Title)
                     {
                          continue;
                     }
@@ -131,13 +131,15 @@ namespace MS_Updates.Func.Persistence
                var existingUpdates = await GetItemsAsync(UpdateSources.Fabric, minPublishedDate, maxPublishedDate, cancellationToken);
                foreach (var fabricUpdate in updates)
                {
-                    // check updated date, if its the same, skip it
+                    // check its rss item id
                     var existingUpdate = existingUpdates.FirstOrDefault(e => e.RssItemId == fabricUpdate.Id);
-                    // check if it already exists by rss item id
-                    if (existingUpdate != null && existingUpdate.PublishedAt == fabricUpdate.PublishedAt)
+
+                    // if rss item id exists, check if the title is the same, if it is, skip it
+                    if (existingUpdate != null && existingUpdate.Title == fabricUpdate.Title)
                     {
                          continue;
                     }
+
                     // save the new update to the db
                     var item = new CosmosItem(
                           fabricUpdate.Id,
@@ -165,13 +167,14 @@ namespace MS_Updates.Func.Persistence
                var existingUpdates = await GetItemsAsync(UpdateSources.Copilot365, minPublishedDate, maxPublishedDate, cancellationToken);
                foreach (var copilotUpdate in updates)
                {
-                    // check updated date, if its the same, skip it
+                    // check its rss item id
                     var existingUpdate = existingUpdates.FirstOrDefault(e => e.RssItemId == copilotUpdate.Id);
-                    // check if it already exists by rss item id
-                    if (existingUpdate != null && existingUpdate.UpdatedAt == copilotUpdate.UpdatedAt)
+                    // if rss item id exists, check if the title is the same, if it is, skip it
+                    if (existingUpdate != null && existingUpdate.Title == copilotUpdate.Title)
                     {
                          continue;
                     }
+
                     // save the new update to the db
                     var item = new CosmosItem(
                           copilotUpdate.Id,
@@ -201,10 +204,11 @@ namespace MS_Updates.Func.Persistence
 
                foreach (var githubUpdate in updates)
                {
-                    // check updated date, if its the same, skip it
+                    // check its rss item id
                     var existingUpdate = existingUpdates.FirstOrDefault(e => e.RssItemId == githubUpdate.Id);
-                    // check if it already exists by rss item id
-                    if (existingUpdate != null && existingUpdate.UpdatedAt == githubUpdate.PublishedAt)
+                    
+                    // if rss item id exists, check if the title is the same, if it is, skip it
+                    if (existingUpdate != null && existingUpdate.Title == githubUpdate.Title)
                     {
                          continue;
                     }

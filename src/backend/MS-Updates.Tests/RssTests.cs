@@ -18,7 +18,11 @@ namespace MS_Updates.Tests
           private readonly HttpClient _httpClient;
 
           // RSS reader
+          private readonly AzureRssService _azureRssService;
+          private readonly FabricRssService _fabricRssService;
           private readonly Copilot365RssService _copilot365RssService;
+          private readonly GitHubRssService _gitHubRssService;
+          private readonly FoundryRssService _foundryRssService;
           private readonly CosmosDataService _cosmosDataService;
 
           // output
@@ -33,6 +37,10 @@ namespace MS_Updates.Tests
                     Timeout = TimeSpan.FromSeconds(20)
                };
 
+               _azureRssService = new AzureRssService(_httpClient);
+               _foundryRssService = new FoundryRssService(_httpClient);
+               _fabricRssService = new FabricRssService(_httpClient);
+               _gitHubRssService = new GitHubRssService(_httpClient);
                _copilot365RssService = new Copilot365RssService(_httpClient);
 
                // Configure JsonSerializerOptions
@@ -51,6 +59,19 @@ namespace MS_Updates.Tests
           }
 
           [Fact]
+          public async Task Read_Azure_Rss_Test()
+          {
+               var rssItems = await _azureRssService.GetUpdatesAsync();
+               foreach (var item in rssItems)
+               {
+                    _output.WriteLine($"{item.Title} - {item.Link}");
+               }
+
+               // save
+               await _cosmosDataService.SaveAzureUpdatesAsync(rssItems);
+          }
+
+          [Fact]
           public async Task Read_Copilot365_Rss_Test()
           {
                var rssItems = await _copilot365RssService.GetUpdatesAsync();
@@ -66,8 +87,7 @@ namespace MS_Updates.Tests
           [Fact]
           public async Task Read_Fabric_Rss_Test()
           {
-               var fabricRssService = new FabricRssService(_httpClient);
-               var rssItems = await fabricRssService.GetUpdatesAsync();
+               var rssItems = await _fabricRssService.GetUpdatesAsync();
                foreach (var item in rssItems)
                {
                     _output.WriteLine($"{item.Title} - {item.Link}");
@@ -80,8 +100,7 @@ namespace MS_Updates.Tests
           [Fact]
           public async Task Read_GitHub_Rss_Test()
           {
-               var gitHubRssService = new GitHubRssService(_httpClient);
-               var rssItems = await gitHubRssService.GetLatestAsync();
+               var rssItems = await _gitHubRssService.GetLatestAsync();
                foreach (var item in rssItems)
                {
                     _output.WriteLine($"{item.Title} - {item.Url}");
