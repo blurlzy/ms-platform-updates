@@ -12,6 +12,7 @@ flowchart LR
     Function --> Cosmos[(Azure Cosmos DB)]
     Cosmos --> API[ASP.NET Core API]
     API --> SPA[Angular SPA]
+    API --> Insights[Azure Application Insights]
     Vault[Azure Key Vault] --> Function
     Vault --> API
 ```
@@ -21,7 +22,7 @@ flowchart LR
 - **Azure Functions worker** polls the upstream RSS feeds at startup and every day at 00:00 and 12:00 UTC.
 - **Azure Cosmos DB** stores the normalized update records.
 - **Azure Key Vault** supplies the Cosmos DB connection settings to both backend services.
-- **Application Insights** monitors the API's performance and usage.
+- **Azure Application Insights** monitors the API's performance and usage.
 
 ## Repository Structure
 
