@@ -72,7 +72,7 @@ namespace MS_Updates.Func.Persistence
                           UpdateSources.Azure,
                           azureUpdate.Link,
                           azureUpdate.Title,
-                          azureUpdate.Description,
+                          Util.ExtractFirstSentence(azureUpdate.Description),
                           azureUpdate.Categories.ToArray(),
                           string.Empty,
                           azureUpdate.PublishedAt,

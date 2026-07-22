@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Identity.Client;
 using MS_Updates.Auth;
 using MS_Updates.Persistence;
 using Xunit.Abstractions;
@@ -47,6 +48,19 @@ namespace MS_Updates.Tests
                {
                     _output.WriteLine($"{item.Source}: {item.Title}");
                }
-          } 
+          }
+
+          [Theory]
+          [InlineData("b364bc66-f91b-41ab-8bad-11374b8c06d2")]
+          public async Task Update_Item_Test(string id)
+          {
+               var item = await _dataService.ReadAsync(id, id);
+
+               // update
+               item.Description = "<DIV>What if you could ask questions about your business data in plain language, and get trusted answers wherever you work? Discover how Fabric IQ, Power BI, Microsoft 365 Copilot, and Fabric data agents are bringing the full breadth of conversational analytics into the flow of work, turning governed business context into insights and action.</DIV>";
+
+               // update
+               var result = await _dataService.UpsertAsync(item, id);
+          }
      }
 }

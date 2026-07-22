@@ -2,6 +2,7 @@
 using MS_Updates.Auth;
 using MS_Updates.Func.Persistence;
 using MS_Updates.Func.Rss;
+using MS_Updates.Func.Utils;
 using Xunit.Abstractions;
 
 namespace MS_Updates.Tests
@@ -62,19 +63,43 @@ namespace MS_Updates.Tests
           public async Task Read_Azure_Rss_Test()
           {
                var rssItems = await _azureRssService.GetUpdatesAsync();
+
+               // order by latest
+               rssItems = rssItems.OrderByDescending(x => x.PublishedAt).Take(10).ToList();
+
                foreach (var item in rssItems)
                {
-                    _output.WriteLine($"{item.Title} - {item.Link}");
+                    //_output.WriteLine($"{item.Title} - {item.Link}");
+                    _output.WriteLine(Util.ExtractFirstSentence(item.Description));
+                    _output.WriteLine("-----------------");
                }
 
                // save
-               await _cosmosDataService.SaveAzureUpdatesAsync(rssItems);
+               //await _cosmosDataService.SaveAzureUpdatesAsync(rssItems);
+          }
+
+          [Fact]
+          public async Task Read_Azure_Rss_Test2()
+          {
+               var rssItems = await _azureRssService.GetUpdatesAsync();
+
+               // order by latest
+               rssItems = rssItems.OrderByDescending(x => x.PublishedAt).Take(10).ToList();
+
+               foreach (var item in rssItems)
+               {
+                    //_output.WriteLine($"{item.Title} - {item.Link}");
+                    _output.WriteLine(item.Description);
+                    _output.WriteLine("-----------------");
+               }
+
           }
 
           [Fact]
           public async Task Read_Copilot365_Rss_Test()
           {
                var rssItems = await _copilot365RssService.GetUpdatesAsync();
+
                foreach (var item in rssItems)
                {
                     _output.WriteLine($"{item.Title} - {item.Link}");
@@ -88,13 +113,15 @@ namespace MS_Updates.Tests
           public async Task Read_Fabric_Rss_Test()
           {
                var rssItems = await _fabricRssService.GetUpdatesAsync();
+               rssItems = rssItems.OrderByDescending(x => x.PublishedAt).Take(10).ToList();
+
                foreach (var item in rssItems)
                {
-                    _output.WriteLine($"{item.Title} - {item.Link}");
+                    _output.WriteLine($"{item.Id}: {Util.ExtractFirstParagraph(item.DescriptionHtml)}");
                }
 
                // save to cosmos
-               await _cosmosDataService.SaveFabricUpdatesAsync(rssItems);
+               //await _cosmosDataService.SaveFabricUpdatesAsync(rssItems);
           }
 
           [Fact]
