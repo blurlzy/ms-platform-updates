@@ -51,13 +51,13 @@ namespace MS_Updates.Tests
           }
 
           [Theory]
-          [InlineData("b364bc66-f91b-41ab-8bad-11374b8c06d2")]
+          [InlineData("933bc1af-e769-43b6-ac35-cdb93e4cc471")]
           public async Task Update_Item_Test(string id)
           {
                var item = await _dataService.ReadAsync(id, id);
 
                // update
-               item.Description = "<DIV>What if you could ask questions about your business data in plain language, and get trusted answers wherever you work? Discover how Fabric IQ, Power BI, Microsoft 365 Copilot, and Fabric data agents are bringing the full breadth of conversational analytics into the flow of work, turning governed business context into insights and action.</DIV>";
+               item.Description = "<DIV>Spend less time configuring and troubleshooting pipelines—and more time delivering <SPAN class=\"\">insights.</SPAN> <SPAN class=\"\">The</SPAN> <SPAN class=\"\">latest</SPAN> <SPAN class=\"\">Microsoft</SPAN> <SPAN class=\"\">Fabric</SPAN> <SPAN class=\"\">Data</SPAN> <SPAN class=\"\">Factory</SPAN> <SPAN class=\"\">updates</SPAN> <SPAN class=\"\">introduce</SPAN> <SPAN class=\"\">smarter</SPAN> <SPAN class=\"\">authoring,</SPAN> <SPAN class=\"\">deeper</SPAN> <SPAN class=\"\">observability,</SPAN> <SPAN class=\"\">AI-powered</SPAN> <SPAN class=\"\">operations,</SPAN> <SPAN class=\"\">and</SPAN> <SPAN class=\"\">new</SPAN> <SPAN class=\"\">pipeline</SPAN> <SPAN class=\"\">capabilities</SPAN> <SPAN class=\"\">that</SPAN> <SPAN class=\"\">make</SPAN> <SPAN class=\"\">building</SPAN> <SPAN class=\"\">and</SPAN> <SPAN class=\"\">managing</SPAN> <SPAN class=\"\">data</SPAN> <SPAN class=\"\">workflows</SPAN> <SPAN class=\"\">faster,</SPAN> <SPAN class=\"\">easier,</SPAN> <SPAN class=\"\">and</SPAN> <SPAN class=\"\">more</SPAN> <SPAN class=\"\">scalable.</SPAN></DIV>";
 
                // update
                var result = await _dataService.UpsertAsync(item, id);

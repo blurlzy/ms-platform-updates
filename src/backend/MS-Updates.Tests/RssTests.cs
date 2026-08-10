@@ -75,7 +75,7 @@ namespace MS_Updates.Tests
                }
 
                // save
-               //await _cosmosDataService.SaveAzureUpdatesAsync(rssItems);
+               await _cosmosDataService.SaveAzureUpdatesAsync(rssItems);
           }
 
           [Fact]
@@ -121,7 +121,7 @@ namespace MS_Updates.Tests
                }
 
                // save to cosmos
-               //await _cosmosDataService.SaveFabricUpdatesAsync(rssItems);
+               await _cosmosDataService.SaveFabricUpdatesAsync(rssItems);
           }
 
           [Fact]
